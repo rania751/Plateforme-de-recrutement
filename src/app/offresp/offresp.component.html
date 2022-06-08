@@ -1,0 +1,57 @@
+
+<nav class="navbar navbar-expand-sm bg-primary navbar-dark">
+    <a routerLink="/admin/offres" routerLinkActive="active">
+    
+        </a>
+    
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarColor02">
+       <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+             
+          </li>
+       </ul>
+       <form class="form-inline my-2 my-lg-0">
+         <input type="search" (ngModelChange)="searchOffres(key.value)" #key="ngModel" ngModel
+          name="key" id="searchName" class="form-control mr-sm-2" placeholder="Search Offre..." required>
+      </form>
+    </div>
+</nav>
+ 
+ <div class="container" id="main-container">
+     <div class="row">
+       <div *ngFor="let offre of offres" class="col-md-6 col-xl-3">
+          <div class="card m-b-30">
+             <div class="card-body row">
+                <div class="col-6 card-title align-self-center mb-0">
+                   <h5>{{offre?.titre_offre}} {{offre?.domaine_offre}}</h5>
+                   <p class="m-0">{{offre?.condition_offre}}</p>
+                </div>
+             </div>
+             <ul class="list-group list-group-flush">
+                <li class="list-group-item"><i class="fa fa-envelope float-right"></i>Region : {{offre?.region_offre}}</li>
+                <li class="list-group-item"><i class="fa fa-phone float-right"></i>Posted in : {{offre?.date_offre}}</li>
+                
+             </ul>
+             <div class="card-body">
+                <div class="float-right btn-group btn-group-sm">
+                   <a   class="btn btn-primary tooltips" data-placement="top" data-original-title="Edit"> Postuler<i class="fa fa-pencil"></i> </a>
+                 
+                </div>
+             </div>
+          </div>
+       </div>
+     </div>
+ 
+   
+     
+     
+     <!-- Notification for no offres 
+     <div *ngIf="offres?.length == 0" class="col-lg-12 col-md-12 col-xl-12">
+     <div class="alert alert-info" role="alert">
+       <h4 class="alert-heading">NO EMPLOYEES!</h4>
+       <p>No Offres were found.</p>
+     </div>
+     </div>-->

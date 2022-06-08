@@ -1,0 +1,177 @@
+<a routerLink="/admin/postulants" routerLinkActive="active"></a>
+<nav class="navbar navbar-expand-sm bg-primary navbar-dark">
+
+    
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarColor02">
+       <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+             <a class="nav-link" (click)="onOpenModalR(null, 'add')">Add Postulant <span class="sr-only">(current)</span></a>
+          </li>
+       </ul>
+       <form class="form-inline my-2 my-lg-0">
+         <input type="search" (ngModelChange)="searchPostulants(key.value)" #key="ngModel" ngModel
+          name="key" id="searchName" class="form-control mr-sm-2" placeholder="Search Postulant..." required>
+      </form>
+    </div>
+</nav>
+ 
+ <div class="container" id="main-container">
+     <div class="row">
+       <div *ngFor="let postulant of postulants" class="col-md-6 col-xl-3">
+          <div class="card m-b-30">
+             <div class="card-body row">
+                <div class="col-6 card-title align-self-center mb-0">
+                   <h5>{{postulant?.prenom_postulant}} {{postulant?.nom_postulant}}</h5>
+                   <p class="m-0">{{postulant?.fonction_postulant}}</p>
+                </div>
+             </div>
+             <ul class="list-group list-group-flush">
+                <li class="list-group-item"><i class="fa fa-envelope float-right"></i>Phone : {{postulant?.numerotlf_postulant}}</li>
+                <li class="list-group-item"><i class="fa fa-phone float-right"></i>Country : {{postulant?.pays_postulant}}</li>
+                
+             </ul>
+             <div class="card-body">
+                <div class="float-right btn-group btn-group-sm">
+                   <a  (click)="onOpenModalR(postulant, 'edit')" class="btn btn-primary tooltips" data-placement="top" data-original-title="Edit"><i class="fa fa-pencil"></i> </a>
+                   <a  (click)="onOpenModalR(postulant, 'delete')" class="btn btn-secondary tooltips" data-placement="top" data-original-title="Delete"><i class="fa fa-times"></i></a>
+                </div>
+             </div>
+          </div>
+       </div>
+     </div>
+ 
+   
+     
+     <!-- Add Postulant Modal -->
+     <div class="modal fade" id="addPostulantModal" tabindex="-1" role="dialog" aria-labelledby="addPostulantModalLabel" aria-hidden="true">
+       <div class="modal-dialog" role="document">
+         <div class="modal-content">
+            <div class="modal-header">
+               <h5 class="modal-title" id="addPostulantModalLabel">Add Postulant</h5>
+               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+               <span aria-hidden="true"></span>
+               </button>
+            </div>
+            <div class="modal-body">
+               <form #addForm="ngForm" (ngSubmit)="onAddPostulant(addForm)">
+               <div class="form-group">
+                  <label for="nom_postulant">Name</label>
+                  <input type="text" ngModel name="nom_postulant" class="form-control" id="nom_postulant" placeholder="nom_postulant" required>
+               </div>
+               <div class="form-group">
+                 <label for="prenom_postulant">Last name</label>
+                 <input type="text" ngModel name="prenom_postulant" class="form-control" id="prenom_postulant" placeholder="prenom_postulant" required>
+              </div>
+              <div class="form-group">
+               <label for="fonction_postulant">Job title</label>
+               <input type="text" ngModel name="fonction_postulant" class="form-control" id="fonction_postulant" placeholder="fonction_postulant" required>
+            </div>
+              
+               <div class="form-group">
+                  <label for="pays_postulant">Country</label>
+                  <input type="text" ngModel name="pays_postulant" class="form-control" id="pays_postulant" placeholder="pays_postulant" required>
+               </div>
+               <div class="form-group">
+                  <label for="region_postulant">Region</label>
+                  <input type="text" ngModel name="region_postulant" class="form-control" id="region_postulant" placeholder="region_postulant" required>
+               </div>
+               <div class="form-group">
+                  <label for="numerotlf_postulant">Phone</label>
+                  <input type="text" ngModel name="numerotlf_postulant" class="form-control" id="numerotlf_postulant" placeholder="numerotlf_postulant" required>
+               </div>
+               
+               <div class="modal-footer">
+                  <button type="button" id="add-postulant-form" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button [disabled]="addForm.invalid" type="submit" class="btn btn-primary" >Save changes</button>
+               </div>
+               </form>
+            </div>
+         </div>
+       </div>
+       </div>
+     
+     <!-- Edit Modal -->
+     <div class="modal fade" id="updatePostulantModal" tabindex="-1" role="dialog" aria-labelledby="postulantEditModalLabel" aria-hidden="true">
+       <div class="modal-dialog" role="document">
+          <div class="modal-content">
+             <div class="modal-header">
+                <h5 class="modal-title" id="updatePostulantModalLabel">Edit Employer {{editPostulant?.nom_postulant}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true"></span>
+                </button>
+             </div>
+             <div class="modal-body">
+                <form #editForm="ngForm">
+                   <div class="form-group">
+                      <label for="nom_postulant">Name</label>
+                      <input type="text" ngModel="{{editPostulant?.nom_postulant}}" name="nom_postulant" class="form-control" id="nom_postulant" aria-describedby="nom_postulant" placeholder="nom_postulant">
+                   </div>
+                   <input type="hidden" ngModel="{{editPostulant?.id}}" name="id" class="form-control" id="id"  placeholder="Email">
+                  
+                   <div class="form-group">
+                      <label for="prenom_postulant">Last Name</label>
+                      <input type="text" ngModel="{{editPostulant?.prenom_postulant}}" name="prenom_postulant" class="form-control" id="prenom_postulant" placeholder="prenom_postulant">
+                   </div>
+                   <div class="form-group">
+                     <label for="fonction_postulant">Job title</label>
+                     <input type="text" ngModel="{{editPostulant?.fonction_postulant}}" name="fonction_postulant" class="form-control" id="fonction_postulant" placeholder="fonction_postulant">
+                  </div>
+                   
+                   <div class="form-group">
+                      <label for="pays_postulant">Country</label>
+                      <input type="text" ngModel="{{editPostulant?.pays_postulant}}" name="pays_postulant" class="form-control" id="pays_postulant" placeholder="pays_postulant">
+                   </div>
+                   <div class="form-group">
+                     <label for="region_postulant">Region</label>
+                     <input type="text" ngModel="{{editPostulant?.region_postulant}}" name="region_postulant" class="form-control" id="region_postulant" placeholder="region_postulant">
+                  </div>
+                   
+                   <div class="form-group">
+                      <label for="numerotlf_postulant">Phone</label>
+                      <input type="text" ngModel="{{editPostulant?.numerotlf_postulant}}" name="numerotlf_postulant" class="form-control" id="numerotlf_postulant" name="numerotlf_postulant" placeholder="numerotlf_postulant">
+                   </div>
+
+                   
+                   
+                   <div class="modal-footer">
+                      <button type="button" id="" data-dismiss="modal" class="btn btn-secondary">Close</button>
+                      <button (click)="onUpdatePostulant(editForm.value)" data-dismiss="modal" class="btn btn-primary" >Save changes</button>
+                   </div>
+                </form>
+             </div>
+          </div>
+       </div>
+     </div> 
+     
+     <!-- Delete Modal -->
+     <div class="modal fade" id="deletePostulantModal" tabindex="-1" role="dialog" aria-labelledby="deleteModelLabel" aria-hidden="true">
+       <div class="modal-dialog" role="document">
+          <div class="modal-content">
+             <div class="modal-header">
+                <h5 class="modal-title" id="deleteModelLabel">Delete Postulant</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+             </div>
+             <div class="modal-body">
+                <p>Are you sure you want to delete postulant {{deletePostulant?.prenom_postulant}}?</p>
+                <div class="modal-footer">
+                   <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                   <button (click)="onDeletePostulant(deletePostulant?.id)" class="btn btn-danger" data-dismiss="modal">Yes</button>
+                </div>
+             </div>
+          </div>
+       </div>
+     </div>
+     </div> 
+     
+     <!-- Notification for no postulants 
+     <div *ngIf="postulants?.length == 0" class="col-lg-12 col-md-12 col-xl-12">
+     <div class="alert alert-info" role="alert">
+       <h4 class="alert-heading">NO EMPLOYEES!</h4>
+       <p>No Postulants were found.</p>
+     </div>
+     </div>-->
